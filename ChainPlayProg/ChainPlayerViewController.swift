@@ -13,7 +13,7 @@ protocol MediaPlaybackDelegate: class {
     func mediaChanged(to: MediaItem)
 }
 
-final class ChainPlayerViewController: UIViewController, MediaPlaybackDelegate {
+final class ChainPlayerViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -21,7 +21,7 @@ final class ChainPlayerViewController: UIViewController, MediaPlaybackDelegate {
 
     let videoPlayer = VideoPlayerController()
     lazy var tableView = {
-        return TableViewController.init(mediaPlaybackDelegate: self)
+        return TableViewController.init(mediaPlaybackDelegate: videoPlayer)
     }()
     
     override func viewDidLoad() {
@@ -57,12 +57,6 @@ final class ChainPlayerViewController: UIViewController, MediaPlaybackDelegate {
         ])
     }
 
-}
-
-extension ChainPlayerViewController {
-    func mediaChanged(to mediaItem: MediaItem) {
-        videoPlayer.playMedia(url: mediaItem.url)
-    }
 }
 
 extension UIViewController {
