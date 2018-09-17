@@ -14,12 +14,22 @@ protocol MediaPlaybackDelegate: class {
 }
 
 final class ChainPlayerViewController: UIViewController {
+    let presenter: UIViewController //VC that presented this VC
+    
+    init(presenter: UIViewController) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
-    let videoPlayer = VideoPlayerController()
+    lazy var videoPlayer = { return VideoPlayerController(presenter: self.presenter) }()
     lazy var tableView = {
         return TableViewController.init(mediaPlaybackDelegate: videoPlayer)
     }()

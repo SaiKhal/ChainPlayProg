@@ -17,7 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = ChainPlayerViewController()
+        
+        let tabBar = UITabBarController()
+        let nav = UINavigationController(rootViewController: tabBar)
+        
+        let mainPage = MainPageViewController()
+        mainPage.tabBarItem = UITabBarItem(tabBarSystemItem: .downloads, tag: 0)
+        tabBar.setViewControllers([MainPageViewController()], animated: true)
+        
+        window?.rootViewController = nav
         window?.makeKeyAndVisible()
         return true
     }

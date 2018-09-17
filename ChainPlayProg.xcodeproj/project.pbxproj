@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A49D9F421500384003A990F /* MediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A49D9F321500384003A990F /* MediaItem.swift */; };
 		1A49D9F62150211C003A990F /* MediaToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A49D9F52150211C003A990F /* MediaToolbarView.swift */; };
+		1A6DBD18215052FC00B1A94E /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6DBD17215052FC00B1A94E /* MainPageViewController.swift */; };
 		1AC976A9214C5C6600371806 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC976A8214C5C6600371806 /* AppDelegate.swift */; };
 		1AC976AB214C5C6600371806 /* ChainPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC976AA214C5C6600371806 /* ChainPlayerViewController.swift */; };
 		1AC976AE214C5C6600371806 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AC976AC214C5C6600371806 /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		1A49D9F321500384003A990F /* MediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItem.swift; sourceTree = "<group>"; };
 		1A49D9F52150211C003A990F /* MediaToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaToolbarView.swift; sourceTree = "<group>"; };
+		1A6DBD17215052FC00B1A94E /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		1AC976A5214C5C6600371806 /* ChainPlayProg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChainPlayProg.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC976A8214C5C6600371806 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AC976AA214C5C6600371806 /* ChainPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainPlayerViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				1AC976A8214C5C6600371806 /* AppDelegate.swift */,
+				1A6DBD17215052FC00B1A94E /* MainPageViewController.swift */,
 				1AC976AA214C5C6600371806 /* ChainPlayerViewController.swift */,
 				1AC976D8214C5DD800371806 /* VideoPlayerController.swift */,
 				1AC976D6214C5CED00371806 /* TableViewController.swift */,
@@ -271,6 +274,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A6DBD18215052FC00B1A94E /* MainPageViewController.swift in Sources */,
 				1AC976AB214C5C6600371806 /* ChainPlayerViewController.swift in Sources */,
 				1A49D9F62150211C003A990F /* MediaToolbarView.swift in Sources */,
 				1A49D9F421500384003A990F /* MediaItem.swift in Sources */,

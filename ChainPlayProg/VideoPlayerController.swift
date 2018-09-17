@@ -9,9 +9,11 @@
 import Foundation
 import AVKit
 
-class VideoPlayerController: UIViewController, AVPictureInPictureControllerDelegate, MediaPlaybackDelegate {
+class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
         
     let initialVideoURL: URL = URL(string: "https://devimages-cdn.apple.com/samplecode/avfoundationMedia/AVFoundationQueuePlayer_HLS2/master.m3u8")!
+    
+    let presenter: UIViewController
     
     lazy var playerController: AVPlayerViewController = {
         let playerController = AVPlayerViewController()
@@ -38,7 +40,8 @@ class VideoPlayerController: UIViewController, AVPictureInPictureControllerDeleg
         
     }
     
-    init() {
+    init(presenter: UIViewController) {
+        self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -77,38 +80,41 @@ class VideoPlayerController: UIViewController, AVPictureInPictureControllerDeleg
             ])
     }
     
-    func beginPictureInPictureMode() {
-        guard let player = player else { return }
-        let layer = AVPlayerLayer(player: player)
-        
-        //Check if Picture in Picture mode is supported on user's device
-        //Picture in Picture is only available on iPads with >iOS 9
-        guard AVPictureInPictureController.isPictureInPictureSupported() else {
-            print("Picture in Picture mode is not supported")
-            return
-        }
-        
-        if let pipController = AVPictureInPictureController(playerLayer: layer) {
-            //Assign self as a delegate to receive PIP state callbacks
-            pipController.delegate = self
-
-            if pipController.isPictureInPicturePossible {
-                pipController.startPictureInPicture()
-            } else {
-                //#8 - isPictureInPicturePossible is a KVO enabled property
-                //observing here for this property so that our class will be
-                //notified when the PIP mode playback is actually possible.
-                pipController.addObserver(pipController, forKeyPath: "isPictureInPicturePossible", options: [.new], context: nil)
-            }
-        }
-    }
+//    func beginPictureInPictureMode() {
+//        guard let player = player else { return }
+//        let layer = AVPlayerLayer(player: player)
+//
+//        //Check if Picture in Picture mode is supported on user's device
+//        //Picture in Picture is only available on iPads with >iOS 9
+//        guard AVPictureInPictureController.isPictureInPictureSupported() else {
+//            print("Picture in Picture mode is not supported")
+//            return
+//        }
+//
+//        if let pipController = AVPictureInPictureController(playerLayer: layer) {
+//            //Assign self as a delegate to receive PIP state callbacks
+//            pipController.delegate = self
+//
+//            if pipController.isPictureInPicturePossible {
+//                pipController.startPictureInPicture()
+//            } else {
+//                //#8 - isPictureInPicturePossible is a KVO enabled property
+//                //observing here for this property so that our class will be
+//                //notified when the PIP mode playback is actually possible.
+//                pipController.addObserver(pipController, forKeyPath: "isPictureInPicturePossible", options: [.new], context: nil)
+//            }
+//        }
+//    }
 }
 
 extension VideoPlayerController {
     func mediaChanged(to mediaItem: MediaItem) {
         playMedia(url: mediaItem.url)
 //        beginPictureInPictureMode()
-        
+        beginPiP(on: presenter)
+    }
+    
+    func beginPiP(on vc: UIViewController) {
         let height = 80
         var width: Int {
             let videoRatio: Double = (16 / 9)
@@ -116,23 +122,23 @@ extension VideoPlayerController {
         }
         
         let new = UIView(frame: CGRect(x: 200, y: 600, width: width, height: height))
+        new.layer.cornerRadius = 5
+        new.clipsToBounds = true
         new.backgroundColor = .red
         
         let playerLayer = AVPlayerLayer.init(player: player)
         playerLayer.videoGravity = .resizeAspectFill
         playerLayer.frame = new.bounds
+        
         new.layer.addSublayer(playerLayer)
-
-        playerController.view.addSubview(new)
+        
+        // must add to the navControllers view to keep the PiP window from scrolling with the tableview.
+        vc.navigationController?.view.addSubview(new)
+        
         new.translatesAutoresizingMaskIntoConstraints = false
         
         player?.play()
-
-//        let new = AVPlayerViewController()
-//        new.player = player
-//        present(new, animated: true) {
-//            new.player?.play()
-//        }
+        navigationController?.popViewController(animated: true)
     }
 }
 
