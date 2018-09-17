@@ -7,8 +7,24 @@
 //
 
 import UIKit
+import AVKit
 
 class TableViewController: UITableViewController {
+    
+    weak var delegate: MediaPlaybackDelegate?
+    
+    init(mediaPlaybackDelegate: MediaPlaybackDelegate) {
+        super.init(style: UITableViewStyle.plain)
+        self.delegate = mediaPlaybackDelegate
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var playerItemCache = [URL: AVPlayerItem]()
+    let movies: [MediaItem] = MediaItem.movies
+
     
     func registerCells() {
         tableView.register(ChainPlayCell.self, forCellReuseIdentifier: "ChainPlayCell")
@@ -18,8 +34,9 @@ class TableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44
+        tableView.backgroundColor = .white
+        tableView.bounces = false
         registerCells()
-        tableView.backgroundColor = .green
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -29,15 +46,40 @@ class TableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 20
+        return movies.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ChainPlayCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ChainPlayCell", for: indexPath) as! ChainPlayCell
+        let movie = movies[indexPath.row]
+        let movieURL = movie.url
+        let playerItem: AVPlayerItem
+        
+        if playerItemCache[movieURL] == nil {
+            playerItem = AVPlayerItem.init(url: movieURL)
+            playerItemCache[movieURL] = playerItem
+        } else {
+            playerItem = playerItemCache[movieURL]!
+        }
+        
+        cell.configure(with: movie)
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let index = indexPath.row
+        let mediaItem = movies[index]
+        
+        delegate?.mediaChanged(to: mediaItem)
+    }
+    
+//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let view = UIView()
+//        view.backgroundColor = .red
+//        return VideoPlayerController().view
+//    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
