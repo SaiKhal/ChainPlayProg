@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1A49D9F421500384003A990F /* MediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A49D9F321500384003A990F /* MediaItem.swift */; };
+		1A49D9F62150211C003A990F /* MediaToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A49D9F52150211C003A990F /* MediaToolbarView.swift */; };
 		1AC976A9214C5C6600371806 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC976A8214C5C6600371806 /* AppDelegate.swift */; };
-		1AC976AB214C5C6600371806 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC976AA214C5C6600371806 /* ContainerViewController.swift */; };
+		1AC976AB214C5C6600371806 /* ChainPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC976AA214C5C6600371806 /* ChainPlayerViewController.swift */; };
 		1AC976AE214C5C6600371806 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AC976AC214C5C6600371806 /* Main.storyboard */; };
 		1AC976B0214C5C6600371806 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AC976AF214C5C6600371806 /* Assets.xcassets */; };
 		1AC976B3214C5C6600371806 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AC976B1214C5C6600371806 /* LaunchScreen.storyboard */; };
@@ -39,9 +40,10 @@
 
 /* Begin PBXFileReference section */
 		1A49D9F321500384003A990F /* MediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItem.swift; sourceTree = "<group>"; };
+		1A49D9F52150211C003A990F /* MediaToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaToolbarView.swift; sourceTree = "<group>"; };
 		1AC976A5214C5C6600371806 /* ChainPlayProg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChainPlayProg.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC976A8214C5C6600371806 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1AC976AA214C5C6600371806 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		1AC976AA214C5C6600371806 /* ChainPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainPlayerViewController.swift; sourceTree = "<group>"; };
 		1AC976AD214C5C6600371806 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1AC976AF214C5C6600371806 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AC976B2214C5C6600371806 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -106,10 +108,11 @@
 			isa = PBXGroup;
 			children = (
 				1AC976A8214C5C6600371806 /* AppDelegate.swift */,
-				1AC976AA214C5C6600371806 /* ContainerViewController.swift */,
+				1AC976AA214C5C6600371806 /* ChainPlayerViewController.swift */,
+				1AC976D8214C5DD800371806 /* VideoPlayerController.swift */,
 				1AC976D6214C5CED00371806 /* TableViewController.swift */,
 				1AC976DA214C657400371806 /* ChainPlayCell.swift */,
-				1AC976D8214C5DD800371806 /* VideoPlayerController.swift */,
+				1A49D9F52150211C003A990F /* MediaToolbarView.swift */,
 				1A49D9F321500384003A990F /* MediaItem.swift */,
 				1AC976AC214C5C6600371806 /* Main.storyboard */,
 				1AC976AF214C5C6600371806 /* Assets.xcassets */,
@@ -268,7 +271,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AC976AB214C5C6600371806 /* ContainerViewController.swift in Sources */,
+				1AC976AB214C5C6600371806 /* ChainPlayerViewController.swift in Sources */,
+				1A49D9F62150211C003A990F /* MediaToolbarView.swift in Sources */,
 				1A49D9F421500384003A990F /* MediaItem.swift in Sources */,
 				1AC976D7214C5CED00371806 /* TableViewController.swift in Sources */,
 				1AC976DB214C657400371806 /* ChainPlayCell.swift in Sources */,
