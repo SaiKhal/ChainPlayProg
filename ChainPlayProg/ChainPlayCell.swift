@@ -10,8 +10,13 @@ import UIKit
 
 class ChainPlayCell: UITableViewCell {
     
+    var thumbnailIsRounded = true
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
+        contentView.clipsToBounds = true
         addViews()
         setupConstraints()
     }
@@ -24,8 +29,13 @@ class ChainPlayCell: UITableViewCell {
     
     lazy var thumbnail: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.image = nil
+        iv.backgroundColor = .green
+//        iv.contentMode = .scaleAspectFit
+        iv.image = #imageLiteral(resourceName: "og-fox-news")
+        if thumbnailIsRounded {
+            iv.layer.cornerRadius = 5
+            iv.clipsToBounds = true
+        }
         return iv
     }()
     
@@ -47,24 +57,21 @@ class ChainPlayCell: UITableViewCell {
     }
     
     func setupThumbnail() {
-        thumbnail.translatesAutoresizingMaskIntoConstraints = false
-        thumbnail.topAnchor.constraint(equalTo: contentView.topAnchor,
-                                       constant: 20).isActive = true //contentView.frame.size.height/2 * 0.2
-        thumbnail.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                          constant: 20).isActive = true
-        thumbnail.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                           constant: 20).isActive = true
+        let margin = contentView.layoutMarginsGuide
         
-        thumbnail.trailingAnchor.constraint(equalTo: videoDescription.trailingAnchor,
-                                            constant: 20).isActive = true
+        thumbnail.translatesAutoresizingMaskIntoConstraints = false
+        thumbnail.topAnchor.constraint(equalTo: margin.topAnchor).isActive = true //contentView.frame.size.height/2 * 0.2
+        thumbnail.bottomAnchor.constraint(equalTo: margin.bottomAnchor).isActive = true
+        thumbnail.leadingAnchor.constraint(equalTo: margin.leadingAnchor).isActive = true
+        thumbnail.trailingAnchor.constraint(equalTo: videoDescription.leadingAnchor, constant: -15).isActive = true
     }
     
     func setupLabel() {
         videoDescription.translatesAutoresizingMaskIntoConstraints = false
-        videoDescription.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 20).isActive = true
-        videoDescription.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor, constant: 20).isActive = true
-        videoDescription.trailingAnchor.constraint(greaterThanOrEqualTo: contentView.trailingAnchor, constant: 20).isActive = true
-         videoDescription.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 20).isActive = true
+        NSLayoutConstraint.activate([
+            videoDescription.topAnchor.constraint(equalTo: thumbnail.topAnchor, constant: 10),
+            videoDescription.leadingAnchor.constraint(equalTo: thumbnail.trailingAnchor, constant: 20)
+            ])
         
     }
 }

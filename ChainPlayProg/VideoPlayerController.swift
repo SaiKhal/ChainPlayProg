@@ -11,8 +11,22 @@ import AVKit
 
 
 class VideoPlayerController: AVPlayerViewController {
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.showsPlaybackControls = false
+    }
+    
     override func viewDidLoad() {
-        
+
+        guard let url = URL(string: "https://devimages-cdn.apple.com/samplecode/avfoundationMedia/AVFoundationQueuePlayer_HLS2/master.m3u8") else {
+            return
+        }
+        // Create an AVPlayer, passing it the HTTP Live Streaming URL.
+        let player = AVPlayer(url: url)
+        // Create a new AVPlayerViewController and pass it a reference to the player.
+        self.player = player
+//        self.showsPlaybackControls = false
+        player.play()
         
 //        view.backgroundColor = .purple
 //        view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
