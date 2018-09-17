@@ -10,7 +10,7 @@ import UIKit
 
 class MainPageViewController: UITableViewController {
     
-    let colors: [UIColor] = [.red, .blue, .green, .purple, .orange, .black, .gray]
+    let colors: [UIColor] = [.red, .blue, .green, .purple, .orange, .gray]
 
     override func viewDidLoad() {
         super.viewDidLoad()

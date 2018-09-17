@@ -38,6 +38,9 @@ class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
         setupMediaToolbar()
         player?.play()
         
+        let swipeDownGesture = UISwipeGestureRecognizer.init(target: self, action: #selector(handleSwipeDown))
+        swipeDownGesture.direction = .down
+        playerController.view.addGestureRecognizer(swipeDownGesture)
     }
     
     init(presenter: UIViewController) {
@@ -80,31 +83,9 @@ class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
             ])
     }
     
-//    func beginPictureInPictureMode() {
-//        guard let player = player else { return }
-//        let layer = AVPlayerLayer(player: player)
-//
-//        //Check if Picture in Picture mode is supported on user's device
-//        //Picture in Picture is only available on iPads with >iOS 9
-//        guard AVPictureInPictureController.isPictureInPictureSupported() else {
-//            print("Picture in Picture mode is not supported")
-//            return
-//        }
-//
-//        if let pipController = AVPictureInPictureController(playerLayer: layer) {
-//            //Assign self as a delegate to receive PIP state callbacks
-//            pipController.delegate = self
-//
-//            if pipController.isPictureInPicturePossible {
-//                pipController.startPictureInPicture()
-//            } else {
-//                //#8 - isPictureInPicturePossible is a KVO enabled property
-//                //observing here for this property so that our class will be
-//                //notified when the PIP mode playback is actually possible.
-//                pipController.addObserver(pipController, forKeyPath: "isPictureInPicturePossible", options: [.new], context: nil)
-//            }
-//        }
-//    }
+    @objc func handleSwipeDown() {
+       beginPiP(on: presenter)
+    }
 }
 
 extension VideoPlayerController {
@@ -121,21 +102,21 @@ extension VideoPlayerController {
             return Int(videoRatio * Double(height))
         }
         
-        let new = UIView(frame: CGRect(x: 200, y: 600, width: width, height: height))
-        new.layer.cornerRadius = 5
-        new.clipsToBounds = true
-        new.backgroundColor = .red
+        let playerContainer = UIView(frame: CGRect(x: 200, y: 600, width: width, height: height))
+        playerContainer.layer.cornerRadius = 5
+        playerContainer.clipsToBounds = true
+        playerContainer.backgroundColor = .red
         
         let playerLayer = AVPlayerLayer.init(player: player)
         playerLayer.videoGravity = .resizeAspectFill
-        playerLayer.frame = new.bounds
+        playerLayer.frame = playerContainer.bounds
         
-        new.layer.addSublayer(playerLayer)
+        playerContainer.layer.addSublayer(playerLayer)
         
         // must add to the navControllers view to keep the PiP window from scrolling with the tableview.
-        vc.navigationController?.view.addSubview(new)
+        vc.navigationController?.view.addSubview(playerContainer)
         
-        new.translatesAutoresizingMaskIntoConstraints = false
+        playerContainer.translatesAutoresizingMaskIntoConstraints = false
         
         player?.play()
         navigationController?.popViewController(animated: true)
