@@ -26,7 +26,7 @@ final class ChainPlayerViewController: UIViewController {
     }
 
     lazy var videoPlayer = {
-        return VideoPlayerController(presenter: self.presenter)
+        return VideoPlayerController(presenter: self.presenter, chainPlayer: self)
         
     }()
     

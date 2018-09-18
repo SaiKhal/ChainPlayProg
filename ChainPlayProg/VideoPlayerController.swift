@@ -18,6 +18,7 @@ class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
     let initialVideoURL: URL = URL(string: "https://devimages-cdn.apple.com/samplecode/avfoundationMedia/AVFoundationQueuePlayer_HLS2/master.m3u8")!
     
     let presenter: UIViewController
+    let chainPlayer: ChainPlayerViewController
     
     lazy var playerController: AVPlayerViewController = {
         let playerController = AVPlayerViewController()
@@ -45,8 +46,9 @@ class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
 //        player?.play()
     }
     
-    init(presenter: UIViewController) {
+    init(presenter: UIViewController, chainPlayer: ChainPlayerViewController) {
         self.presenter = presenter
+        self.chainPlayer = chainPlayer
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -73,18 +75,7 @@ class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
             playerController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             ])
     }
-    
-//    func setupMediaToolbar() {
-//        mediaToolbar.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            mediaToolbar.topAnchor.constraint(equalTo: playerController.view.bottomAnchor),
-//            mediaToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            mediaToolbar.leadingAnchor.constraint(equalTo: playerController.view.leadingAnchor),
-//            mediaToolbar.trailingAnchor.constraint(equalTo: playerController.view.trailingAnchor),
-//            mediaToolbar.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
-//            ])
-//    }
-    
+
     func setupSwipeDownGesture() {
         let swipeDownGesture = UISwipeGestureRecognizer.init(target: self, action: #selector(handleSwipeDown))
         swipeDownGesture.direction = .down
@@ -103,17 +94,17 @@ extension VideoPlayerController {
     
     func beginPiP(on vc: UIViewController) {
         guard let player = player, let nav = vc.navigationController?.view else { return }
-        let pip = PiPView(player: player)
+        let pip = PiPView(player: player, presenter: presenter, chainPlayer: chainPlayer)
         pip.translatesAutoresizingMaskIntoConstraints = false
+        nav.addSubview(pip)
+        NSLayoutConstraint.activate([
+            pip.bottomAnchor.constraint(equalTo: nav.safeAreaLayoutGuide.bottomAnchor),
+            pip.trailingAnchor.constraint(equalTo: nav.safeAreaLayoutGuide.trailingAnchor),
+            pip.widthAnchor.constraint(equalTo: nav.widthAnchor, multiplier: 0.7),
+            pip.heightAnchor.constraint(equalTo: pip.widthAnchor, multiplier: (9.0/16.0)),
+            ])
         dismiss(animated: true, completion: {
-            nav.addSubview(pip)
-            NSLayoutConstraint.activate([
-                pip.bottomAnchor.constraint(equalTo: nav.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-                pip.trailingAnchor.constraint(equalTo: nav.trailingAnchor, constant: -10),
-                pip.widthAnchor.constraint(equalTo: nav.widthAnchor, multiplier: 0.4),
-                pip.heightAnchor.constraint(equalTo: pip.widthAnchor, multiplier: (9.0/16.0)),
-                ])
-            pip.centerXAnchor.constraint(equalTo: nav.centerXAnchor).isActive = true
+            
             
         })
     }
