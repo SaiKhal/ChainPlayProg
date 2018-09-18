@@ -21,9 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBar = UITabBarController()
         let nav = UINavigationController(rootViewController: tabBar)
         
-        let mainPage = MainPageViewController()
+        let mainPage = HomeViewController()
         mainPage.tabBarItem = UITabBarItem(tabBarSystemItem: .downloads, tag: 0)
-        tabBar.setViewControllers([MainPageViewController()], animated: true)
+        tabBar.setViewControllers([mainPage], animated: true)
         
         window?.rootViewController = nav
         window?.makeKeyAndVisible()

@@ -9,6 +9,10 @@
 import Foundation
 import AVKit
 
+protocol MediaPlaybackDelegate: class {
+    func mediaChanged(to: MediaItem)
+}
+
 class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
         
     let initialVideoURL: URL = URL(string: "https://devimages-cdn.apple.com/samplecode/avfoundationMedia/AVFoundationQueuePlayer_HLS2/master.m3u8")!
@@ -28,19 +32,17 @@ class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
         return view
     }()
     
-    var player: AVPlayer? { return playerController.player }
+    var player: AVPlayer? {
+        return playerController.player
+    }
     
     override func viewDidLoad() {
         UIApplication.shared.statusBarStyle = .lightContent
         view.backgroundColor = .black
         addSubviews()
         setupVideoPlayer()
-        setupMediaToolbar()
-        player?.play()
-        
-        let swipeDownGesture = UISwipeGestureRecognizer.init(target: self, action: #selector(handleSwipeDown))
-        swipeDownGesture.direction = .down
-        playerController.view.addGestureRecognizer(swipeDownGesture)
+        setupSwipeDownGesture()
+//        player?.play()
     }
     
     init(presenter: UIViewController) {
@@ -72,15 +74,21 @@ class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
             ])
     }
     
-    func setupMediaToolbar() {
-        mediaToolbar.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            mediaToolbar.topAnchor.constraint(equalTo: playerController.view.bottomAnchor),
-            mediaToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            mediaToolbar.leadingAnchor.constraint(equalTo: playerController.view.leadingAnchor),
-            mediaToolbar.trailingAnchor.constraint(equalTo: playerController.view.trailingAnchor),
-            mediaToolbar.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
-            ])
+//    func setupMediaToolbar() {
+//        mediaToolbar.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            mediaToolbar.topAnchor.constraint(equalTo: playerController.view.bottomAnchor),
+//            mediaToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            mediaToolbar.leadingAnchor.constraint(equalTo: playerController.view.leadingAnchor),
+//            mediaToolbar.trailingAnchor.constraint(equalTo: playerController.view.trailingAnchor),
+//            mediaToolbar.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
+//            ])
+//    }
+    
+    func setupSwipeDownGesture() {
+        let swipeDownGesture = UISwipeGestureRecognizer.init(target: self, action: #selector(handleSwipeDown))
+        swipeDownGesture.direction = .down
+        playerController.view.addGestureRecognizer(swipeDownGesture)
     }
     
     @objc func handleSwipeDown() {
@@ -91,35 +99,23 @@ class VideoPlayerController: UIViewController, MediaPlaybackDelegate {
 extension VideoPlayerController {
     func mediaChanged(to mediaItem: MediaItem) {
         playMedia(url: mediaItem.url)
-//        beginPictureInPictureMode()
-        beginPiP(on: presenter)
     }
     
     func beginPiP(on vc: UIViewController) {
-        let height = 80
-        var width: Int {
-            let videoRatio: Double = (16 / 9)
-            return Int(videoRatio * Double(height))
-        }
-        
-        let playerContainer = UIView(frame: CGRect(x: 200, y: 600, width: width, height: height))
-        playerContainer.layer.cornerRadius = 5
-        playerContainer.clipsToBounds = true
-        playerContainer.backgroundColor = .red
-        
-        let playerLayer = AVPlayerLayer.init(player: player)
-        playerLayer.videoGravity = .resizeAspectFill
-        playerLayer.frame = playerContainer.bounds
-        
-        playerContainer.layer.addSublayer(playerLayer)
-        
-        // must add to the navControllers view to keep the PiP window from scrolling with the tableview.
-        vc.navigationController?.view.addSubview(playerContainer)
-        
-        playerContainer.translatesAutoresizingMaskIntoConstraints = false
-        
-        player?.play()
-        navigationController?.popViewController(animated: true)
+        guard let player = player, let nav = vc.navigationController?.view else { return }
+        let pip = PiPView(player: player)
+        pip.translatesAutoresizingMaskIntoConstraints = false
+        dismiss(animated: true, completion: {
+            nav.addSubview(pip)
+            NSLayoutConstraint.activate([
+                pip.bottomAnchor.constraint(equalTo: nav.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+                pip.trailingAnchor.constraint(equalTo: nav.trailingAnchor, constant: -10),
+                pip.widthAnchor.constraint(equalTo: nav.widthAnchor, multiplier: 0.4),
+                pip.heightAnchor.constraint(equalTo: pip.widthAnchor, multiplier: (9.0/16.0)),
+                ])
+            pip.centerXAnchor.constraint(equalTo: nav.centerXAnchor).isActive = true
+            
+        })
     }
 }
 

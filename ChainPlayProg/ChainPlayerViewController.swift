@@ -9,10 +9,6 @@
 import UIKit
 import AVKit
 
-protocol MediaPlaybackDelegate: class {
-    func mediaChanged(to: MediaItem)
-}
-
 final class ChainPlayerViewController: UIViewController {
     let presenter: UIViewController //VC that presented this VC
     
@@ -29,13 +25,18 @@ final class ChainPlayerViewController: UIViewController {
         return .lightContent
     }
 
-    lazy var videoPlayer = { return VideoPlayerController(presenter: self.presenter) }()
+    lazy var videoPlayer = {
+        return VideoPlayerController(presenter: self.presenter)
+        
+    }()
+    
     lazy var tableView = {
         return TableViewController.init(mediaPlaybackDelegate: videoPlayer)
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         // Do any additional setup after loading the view, typically from a nib.
         addChildVC()
         setupTableView()
@@ -60,7 +61,7 @@ final class ChainPlayerViewController: UIViewController {
     func setupTableView() {
         tableView.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.view.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6),
             tableView.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),

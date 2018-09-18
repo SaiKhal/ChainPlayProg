@@ -73,80 +73,11 @@ class TableViewController: UITableViewController {
         
         delegate?.mediaChanged(to: mediaItem)
     }
-//
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = MediaToolbarView()
-        tableView.setTableHeaderView(headerView: view)
-        return view
-    }
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
+//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let view = MediaToolbarView()
+////        tableView.setTableHeaderView(headerView: view)
+//        return view
+//    }
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-}
-
-extension UITableView {
-    // 1.
-    func setTableHeaderView(headerView: UIView) {
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        self.tableHeaderView = headerView
-        
-        // ** Must setup AutoLayout after set tableHeaderView.
-        headerView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        headerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        headerView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-    }
-    
-    // 2.
-    func shouldUpdateHeaderViewFrame() -> Bool {
-        guard let headerView = self.tableHeaderView else { return false }
-        let oldSize = headerView.bounds.size
-        // Update the size
-        headerView.layoutIfNeeded()
-        let newSize = headerView.bounds.size
-        return oldSize != newSize
-    }
 }

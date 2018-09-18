@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainPageViewController: UITableViewController {
+class HomeViewController: UITableViewController {
     
     let colors: [UIColor] = [.red, .blue, .green, .purple, .orange, .gray]
 
@@ -57,7 +57,7 @@ class MainPageViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let chainPlayer = ChainPlayerViewController(presenter: self)
-        navigationController?.pushViewController(chainPlayer, animated: true)
+        navigationController?.present(chainPlayer, animated: true, completion: nil)
     }
     
 
