@@ -95,17 +95,10 @@ extension VideoPlayerController {
     func beginPiP(on vc: UIViewController) {
         guard let player = player, let nav = vc.navigationController?.view else { return }
         let pip = PiPView(player: player, presenter: presenter, chainPlayer: chainPlayer)
-        pip.translatesAutoresizingMaskIntoConstraints = false
         nav.addSubview(pip)
-        NSLayoutConstraint.activate([
-            pip.bottomAnchor.constraint(equalTo: nav.safeAreaLayoutGuide.bottomAnchor),
-            pip.trailingAnchor.constraint(equalTo: nav.safeAreaLayoutGuide.trailingAnchor),
-            pip.widthAnchor.constraint(equalTo: nav.widthAnchor, multiplier: 0.7),
-            pip.heightAnchor.constraint(equalTo: pip.widthAnchor, multiplier: (9.0/16.0)),
-            ])
+        
         dismiss(animated: true, completion: {
-            
-            
+            pip.snapToNearestCorner()
         })
     }
 }

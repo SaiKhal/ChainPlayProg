@@ -1,55 +1,26 @@
 //
-//  PiPView.swift
+//  Draggable.swift
 //  ChainPlayProg
 //
-//  Created by Masai Young on 9/17/18.
+//  Created by Masai Young on 9/18/18.
 //  Copyright © 2018 Masai Young. All rights reserved.
 //
 
 import UIKit
-import AVKit
 
-class PiPView: UIView {
-    let playerLayer: AVPlayerLayer
-    let presenter: UIViewController
-    let chainPlayer: ChainPlayerViewController
-    
-    init(player: AVPlayer, presenter: UIViewController, chainPlayer: ChainPlayerViewController) {
-        let playerLayer = AVPlayerLayer(player: player)
-        self.playerLayer = playerLayer
-        self.chainPlayer = chainPlayer
-        self.presenter = presenter
-        let height = 80
-        var width: Int {
-            let videoRatio: Double = (16 / 9)
-            return Int(videoRatio * Double(height))
-        }
-        let size = CGRect(x: 200, y: 600, width: width, height: height)
-        super.init(frame: size)
-        
-        layer.cornerRadius = 5
-        clipsToBounds = true
-        
-        playerLayer.videoGravity = .resizeAspectFill
-        playerLayer.frame = self.bounds
-        
-        self.layer.addSublayer(playerLayer)
-        player.play()
-        
-        makeDraggable()
-        makeTappable()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func makeDraggable() {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDrag(_:)))
-        self.addGestureRecognizer(panGesture)
+protocol Draggable {
+    func makeDraggable(selector: Selector)
+    func handleDrag(_ gesture: UIPanGestureRecognizer)
+    func snapToNearestCorner()
+}
+
+extension Draggable where Self: UIView {
+    func makeDraggable(selector: Selector) {
+        let gesture = UIPanGestureRecognizer(target: self, action: selector)
+        addGestureRecognizer(gesture)
     }
 
-    @objc func handleDrag(_ gesture: UIPanGestureRecognizer) {
+    func handleDrag(_ gesture: UIPanGestureRecognizer) {
         guard let view = gesture.view else { return }
         let translation = gesture.translation(in: self)
         view.center = CGPoint(x: view.center.x + translation.x, y: view.center.y + translation.y)
@@ -60,18 +31,7 @@ class PiPView: UIView {
             snapToNearestCorner()
         }
     }
-    
-    func makeTappable() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        self.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc func handleTap(_ gesture: UITapGestureRecognizer) {
-        self.removeFromSuperview()
-        let nav = presenter.navigationController
-        nav?.present(chainPlayer, animated: true, completion: nil)
-    }
-    
+
     func snapToNearestCorner() {
         let screenSize = UIScreen.main.bounds
         let left = 0..<screenSize.midX
@@ -112,6 +72,6 @@ class PiPView: UIView {
         UIView.animate(withDuration: 0.5) {
             self.center = newCenter
         }
+
     }
-    
 }
